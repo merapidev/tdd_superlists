@@ -11,6 +11,14 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        self.browser.implicitly_wait(1)
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+
+        self.assertIn(row_text, [row.text for row in rows])
+
+
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edyta dowiedziałą się o nowej, wspaniałej aplikacji w postaci listy rzeczy do zrobienia
         # Postanowiła więc przejść na stronę głowną tej aplikacji
@@ -34,9 +42,7 @@ class NewVisitorTest(unittest.TestCase):
         # Po naciśnięciu klawisza Enter strona została zaktualizowana i wyświetla 
         # "1: Kupić pawie piora" jako element listy rzeczy do zrobienia
         inputbox.send_keys(Keys.ENTER)
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Kupić pawie piora', [row.text for row in rows])
+        self.check_for_row_in_list_table(row_text='1: Kupić pawie piora')
 
         # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania
         # Edyta wpisała "Użyć pawich pior do zrobienia przynęty"
@@ -45,10 +51,8 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
 
         # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy na liście rzeczy do zrobienia
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Kupić pawie piora', [row.text for row in rows])
-        self.assertIn('2: Użyć pawich pior do zrobienia przynęty', [row.text for row in rows])
+        self.check_for_row_in_list_table(row_text='1: Kupić pawie piora')
+        self.check_for_row_in_list_table(row_text='2: Użyć pawich pior do zrobienia przynęty')
 
         # Edyta była ciekawa, czy witryna zapamięta jej listę. Zwrociła uwagę na wygnerowany dla niej 
         # unikatowy adres URL, obok ktorego znajduej się pewien tekst z wyjaśnieniem
