@@ -2,8 +2,9 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+
 class NewVisitorTest(unittest.TestCase):
-    
+
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
@@ -17,7 +18,6 @@ class NewVisitorTest(unittest.TestCase):
         rows = table.find_elements_by_tag_name('tr')
 
         self.assertIn(row_text, [row.text for row in rows])
-
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edyta dowiedziałą się o nowej, wspaniałej aplikacji w postaci listy rzeczy do zrobienia
@@ -39,7 +39,7 @@ class NewVisitorTest(unittest.TestCase):
         # W polu tekstowym wspiała "Kupić pawie piora"
         inputbox.send_keys('Kupić pawie piora')
 
-        # Po naciśnięciu klawisza Enter strona została zaktualizowana i wyświetla 
+        # Po naciśnięciu klawisza Enter strona została zaktualizowana i wyświetla
         # "1: Kupić pawie piora" jako element listy rzeczy do zrobienia
         inputbox.send_keys(Keys.ENTER)
         self.check_for_row_in_list_table(row_text='1: Kupić pawie piora')
@@ -50,15 +50,19 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys('Użyć pawich pior do zrobienia przynęty')
         inputbox.send_keys(Keys.ENTER)
 
-        # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy na liście rzeczy do zrobienia
+        # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy
+        # na liście rzeczy do zrobienia
         self.check_for_row_in_list_table(row_text='1: Kupić pawie piora')
-        self.check_for_row_in_list_table(row_text='2: Użyć pawich pior do zrobienia przynęty')
+        self.check_for_row_in_list_table(
+            row_text='2: Użyć pawich pior do zrobienia przynęty')
 
-        # Edyta była ciekawa, czy witryna zapamięta jej listę. Zwrociła uwagę na wygnerowany dla niej 
-        # unikatowy adres URL, obok ktorego znajduej się pewien tekst z wyjaśnieniem
+        # Edyta była ciekawa, czy witryna zapamięta jej listę. Zwrociła uwagę na wygnerowany dla niej
+        # unikatowy adres URL, obok ktorego znajduej się pewien tekst z
+        # wyjaśnieniem
         self.fail('Zakonczenie testu!')
 
-        # Przechodzi pod podany adres URL i widzi wyświetloną swoją listę rzeczy do zrobienia
+        # Przechodzi pod podany adres URL i widzi wyświetloną swoją listę
+        # rzeczy do zrobienia
 
         # Usatysfakcjonowana kładzie się spać
 
