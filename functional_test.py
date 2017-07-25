@@ -1,4 +1,5 @@
 import unittest
+import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -13,7 +14,7 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.quit()
 
     def check_for_row_in_list_table(self, row_text):
-        self.browser.implicitly_wait(1)
+        time.sleep(1)
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
 
