@@ -1,10 +1,10 @@
-import unittest
 import time
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -23,7 +23,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edyta dowiedziałą się o nowej, wspaniałej aplikacji w postaci listy rzeczy do zrobienia
         # Postanowiła więc przejść na stronę głowną tej aplikacji
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # Zwrociła uwagę, że tytuł strony i nagłwek zawierający słowo Lisy
         self.assertIn('Listy', self.browser.title)
@@ -43,6 +43,8 @@ class NewVisitorTest(unittest.TestCase):
         # Po naciśnięciu klawisza Enter strona została zaktualizowana i wyświetla
         # "1: Kupić pawie piora" jako element listy rzeczy do zrobienia
         inputbox.send_keys(Keys.ENTER)
+        edith_list_url = self.browser.current_url
+        self.assertRegex(edith_list_url, '/lists/.+')
         self.check_for_row_in_list_table(row_text='1: Kupić pawie piora')
 
         # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania
@@ -57,15 +59,36 @@ class NewVisitorTest(unittest.TestCase):
         self.check_for_row_in_list_table(
             row_text='2: Użyć pawich pior do zrobienia przynęty')
 
-        # Edyta była ciekawa, czy witryna zapamięta jej listę. Zwrociła uwagę na wygnerowany dla niej
-        # unikatowy adres URL, obok ktorego znajduej się pewien tekst z
-        # wyjaśnieniem
-        self.fail('Zakonczenie testu!')
+        # Teraz nowy użytkownik Franek zaczyna korzystać z witryny
 
-        # Przechodzi pod podany adres URL i widzi wyświetloną swoją listę
-        # rzeczy do zrobienia
+        ## Używa nowej sesji przeglądarki internetowej, aby mieć pewność, że żadne
+        ## informacje dotyczące Edyty nie zostaną ujawnione, na przykłąd przez cookies
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+
+        # Franek odwiedza stronę głowną
+        # Nie znajduje żadnych śladow listy Edyty
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Kupić pawie piora', page_text)
+        self.assertNotIn('zrobienia przynęty', page_text)
+
+        # Franek tworzy nową listę, wprowadzając nowy element
+        # Jego lista jest mniej interesująca niż Edyty...
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Kupić mleko')
+        inputbox.send_keys(Keys.ENTER)
+
+        # Franek otrzymuje unikatowy adres URL prowadzący do listy
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, '/lists/.+')
+        self.assertNotEqual(francis_list_url, edith_list_url)
+
+        # Ponownie nie ma żadnego śladu po liście Edyty
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Kupić pawie piora', page_text)
+        self.assertIn('Kupić mleko', page_text)
+        
 
         # Usatysfakcjonowana kładzie się spać
-
-if __name__ == '__main__':
-    unittest.main()
+        self.fail('Zakonczenie testu!')
