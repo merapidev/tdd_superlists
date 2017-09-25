@@ -1,17 +1,47 @@
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 
 <head>
-    <title>Listy rzeczy do zrobienia</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Listy rzeczy do zrobienia</title>
+
+  <!-- Bootstrap -->
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/base.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
-    <h1>{% block header_text %}{% endblock %}</h1>
-    <form method="POST" action="{% block form_action %}{% endblock %}">
-        <input id="id_new_item" name="item_text" type="text" placeholder="Wpisz rzecz do zrobienia" /> 
-        {% csrf_token %}
-    </form>
-    {% block table %}
-    {% endblock %}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 jumbotron">
+        <div class="text-center">
+          <h1>{% block header_text %}{% endblock %}</h1>
+          <form method="POST" action="{% block form_action %}{% endblock %}">
+            <input id="id_new_item" name="item_text" class="form-control input-lg" type="text" placeholder="Wpisz rzecz do zrobienia" /> 
+            {% csrf_token %}
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          {% block table %} 
+          {% endblock %}
+        </div>
+    </div>  
+  </div>  
 </body>
 
 </html>
