@@ -1,4 +1,5 @@
 import time
+import os
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -6,11 +7,15 @@ from selenium.common.exceptions import WebDriverException
 
 MAX_WAIT = 10
 
+
 class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
 
     def tearDown(self):
         self.browser.quit()
@@ -55,7 +60,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, '/lists/.+')
         self.wait_for_row_in_list_table(row_text='1: Kupić pawie piora')
-        
 
         # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania
         # Edyta wpisała "Użyć pawich pior do zrobienia przynęty"
@@ -128,4 +132,3 @@ class NewVisitorTest(StaticLiveServerTestCase):
             512,
             delta=15
         )
-        
