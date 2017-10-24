@@ -73,6 +73,3 @@ class NewVisitorTest(FunctionalTest):
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Kupić pawie piora', page_text)
         self.assertIn('Kupić mleko', page_text)
-
-        # Usatysfakcjonowana kładzie się spać
-        self.fail('Zakonczenie testu!')
