@@ -3,6 +3,7 @@ import os
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.keys import Keys
 
 MAX_WAIT = 10
 
@@ -32,3 +33,7 @@ class FunctionalTest(StaticLiveServerTestCase):
                     raise exc
                 time.sleep(0.5)
 
+    def submit_new_item(self, text):
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys(text)
+        inputbox.send_keys(Keys.ENTER)

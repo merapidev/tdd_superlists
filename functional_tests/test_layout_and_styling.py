@@ -1,6 +1,5 @@
 import time
 from .base import FunctionalTest
-from selenium.webdriver.common.keys import Keys
 
 
 class LayoutAndStylingTest(FunctionalTest):
@@ -20,8 +19,7 @@ class LayoutAndStylingTest(FunctionalTest):
 
         # Edyta utworzyla nowa liste i zobaczyła
         # że pole tekstowe nadal jest wyśrodkowane
-        inputbox.send_keys('testing')
-        inputbox.send_keys(Keys.ENTER)
+        self.submit_new_item(text='testing')
         time.sleep(1)
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(

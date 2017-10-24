@@ -36,9 +36,7 @@ class NewVisitorTest(FunctionalTest):
 
         # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania
         # Edyta wpisała "Użyć pawich pior do zrobienia przynęty"
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        inputbox.send_keys('Użyć pawich pior do zrobienia przynęty')
-        inputbox.send_keys(Keys.ENTER)
+        self.submit_new_item(text='Użyć pawich pior do zrobienia przynęty')
 
         # Strona została ponownie uaktualniona i teraz wyświetla dwa elementy
         # na liście rzeczy do zrobienia
@@ -63,9 +61,7 @@ class NewVisitorTest(FunctionalTest):
 
         # Franek tworzy nową listę, wprowadzając nowy element
         # Jego lista jest mniej interesująca niż Edyty...
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        inputbox.send_keys('Kupić mleko')
-        inputbox.send_keys(Keys.ENTER)
+        self.submit_new_item(text='Kupić mleko')
         time.sleep(1)
 
         # Franek otrzymuje unikatowy adres URL prowadzący do listy
