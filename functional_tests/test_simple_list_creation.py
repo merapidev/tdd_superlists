@@ -17,7 +17,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('listę', header_text)
 
         # Od razu zostaje zachęconam aby wpisać rzecz do zrobienia
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         self.assertEqual(
             'Wpisz rzecz do zrobienia',
             inputbox.get_attribute('placeholder')

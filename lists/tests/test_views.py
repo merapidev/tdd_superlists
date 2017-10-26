@@ -57,7 +57,7 @@ class ListViewTest(TestCase):
 
         self.client.post(
             '/lists/%d/' % (correct_list.id,),
-            data={'item_text': 'Nowy element dla istniejącej listy'}
+            data={'text': 'Nowy element dla istniejącej listy'}
         )
 
         self.assertEqual(Item.objects.count(), 1)
@@ -73,14 +73,14 @@ class ListViewTest(TestCase):
 
         response = self.client.post(
             '/lists/%d/' % (correct_list.id,),
-            data={'item_text': 'Nowy element dla istniejącej listy'}
+            data={'text': 'Nowy element dla istniejącej listy'}
         )
 
         self.assertRedirects(response, '/lists/%d/' % (correct_list.id,))
 
     def test_validation_errors_end_up_on_lists_page(self):
         list_ = List.objects.create()
-        response = self.client.post('/lists/%d/' % (list_.id,), data={'item_text': ''})
+        response = self.client.post('/lists/%d/' % (list_.id,), data={'text': ''})
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'list.html')
@@ -92,7 +92,7 @@ class NewListTest(TestCase):
 
     def test_saving_a_POST_request(self):
         response = self.client.post(
-            '/lists/new', data={'item_text': 'Nowy element listy'})
+            '/lists/new', data={'text': 'Nowy element listy'})
 
         self.assertEqual(Item.objects.count(), 1)
 
@@ -102,7 +102,7 @@ class NewListTest(TestCase):
 
     def test_redirects_after_POST(self):
         response = self.client.post(
-            '/lists/new', data={'item_text': 'Nowy element listy'})
+            '/lists/new', data={'text': 'Nowy element listy'})
 
         new_list = List.objects.first()
         test = '/lists/%d/' % (new_list.id,)
@@ -110,7 +110,7 @@ class NewListTest(TestCase):
         self.assertRedirects(response, test)
 
     def test_validation_errors_are_sent_back_to_home_page_template(self):
-        response = self.client.post('/lists/new', data={'item_text': ''})
+        response = self.client.post('/lists/new', data={'text': ''})
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')

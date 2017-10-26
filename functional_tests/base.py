@@ -34,6 +34,9 @@ class FunctionalTest(StaticLiveServerTestCase):
                 time.sleep(0.5)
 
     def submit_new_item(self, text):
-        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox = self.get_item_input_box()
         inputbox.send_keys(text)
         inputbox.send_keys(Keys.ENTER)
+
+    def get_item_input_box(self):
+        return self.browser.find_element_by_id('id_text')
