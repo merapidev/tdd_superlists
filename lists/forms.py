@@ -11,7 +11,7 @@ class ItemForm(forms.models.ModelForm):
         widgets = {
             'text': forms.fields.TextInput(attrs={
                 'placeholder': 'Wpisz rzecz do zrobienia',
-                'class': 'form-control input-lg',
+                'class': 'form-control input-lg'
             }),
         }
         error_messages = {
